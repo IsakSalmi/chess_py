@@ -5,6 +5,6 @@ IMAGE_FOLDER = 'images/'                  # Folder Where images are stored for t
 BOARD_COLOR_LIGHT = (241, 223, 197)         # Color (in R, G, B) for the Light squares of the board
 BOARD_COLOR_DARK = (178, 135, 108)         # Color (in R, G, B) for the Dark Squares of the board
 LOG_BOARD_WIDTH = 250
-AI_DEPTH = 5
+AI_DEPTH = 4
 MOVE_LOG_COLOR = 'Black'
 MOVE_LOG_COLOR_NOTATION = 'White'
