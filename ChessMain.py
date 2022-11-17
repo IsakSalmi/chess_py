@@ -1,9 +1,10 @@
 import sys
 from multiprocessing import Process, Queue
-import ChessEngine
-import config
+import Lib.ChessEngine as ChessEngine
+import Lib.config as config
 import pygame as p
-import chessAI
+import Lib.chessAI as chessAI
+import Lib.StockFish as SF
 
 
 p.init()
@@ -36,6 +37,7 @@ def main():
     moveLogFont = p.font.SysFont('Arial', 12, False, False)
     
     gs = ChessEngine.GameState()
+    ChessAi = SF.StockFish()
     validMoves = gs.getValidMoves()  # get a list of valid moves.
     moveMade = False  # to check if the user made a move. If true recalculate validMoves.
     loadImages()  # only do this once -> before the while loop
