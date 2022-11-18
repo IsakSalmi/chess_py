@@ -37,7 +37,7 @@ def main():
     moveLogFont = p.font.SysFont('Arial', 12, False, False)
     
     gs = ChessEngine.GameState()
-    ChessAi = SF.StockFish()
+    ChessAI_s = SF.ChessAI_S()
     validMoves = gs.getValidMoves()  # get a list of valid moves.
     moveMade = False  # to check if the user made a move. If true recalculate validMoves.
     loadImages()  # only do this once -> before the while loop
