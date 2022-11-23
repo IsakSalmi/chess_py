@@ -30,6 +30,7 @@ def loadImages():
 This will be out main driver. It will handle user input and update the graphics.
 '''
 def main():
+    
     screen = p.display.set_mode((BOARD_WIDTH + MOVE_LOG_PANEL_WIDTH, BOARD_HEIGHT))
     clock = p.time.Clock()
     screen.fill(p.Color('Black'))
@@ -55,6 +56,9 @@ def main():
     moveUndone = False
     
     #simple start meney
+    
+    ChessAI_s.getBestMove()
+    
     start = True
     while start:
         for e in p.event.get():
@@ -144,13 +148,13 @@ def main():
             if not AIThinking:
                 AIThinking = True
                 print("thinking.....")
-                
+                    
                 #if you are not using threading you only need to set AIMove = findBestMove
                 #and take awhay all the threading parts
                 returnQueue = Queue() #used to pass data betweem threads
                 moveFinderProcess = Process(target=chessAI.findBestMove, args=(gs, validMoves, returnQueue))
                 moveFinderProcess.start()
-                
+                    
             if not moveFinderProcess.is_alive():
                 print("done thinking")
                 AIMove = returnQueue.get()
@@ -159,7 +163,7 @@ def main():
                 gs.makeMove(AIMove)
                 moveMade = True
                 AIThinking = False        
-        
+            
         #If a move is made we calculate the new move
         if moveMade:
             validMoves = gs.getValidMoves()
