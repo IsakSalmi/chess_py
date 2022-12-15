@@ -56,9 +56,6 @@ def main():
     moveUndone = False
     
     #simple start meney
-    
-    ChessAI_s.getBestMove()
-    
     start = True
     while start:
         for e in p.event.get():
@@ -115,6 +112,7 @@ def main():
                             for i in range(len(validMoves)):
                                 if move == validMoves[i]:
                                     gs.makeMove(validMoves[i])
+                                    ChessAI_s.MakeMove_s(validMoves[i])
                                     moveMade = True
                                     playerClicks = []  # reset playerClicks
                                     sqSelected = ()  # reset user clicks
@@ -145,6 +143,8 @@ def main():
 
         #AI move finder with threading
         if not gameOver and not humanTurn and not moveUndone:
+            
+            """
             if not AIThinking:
                 AIThinking = True
                 print("thinking.....")
@@ -162,7 +162,15 @@ def main():
                     AIMove = chessAI.findRandomMove(validMoves)
                 gs.makeMove(AIMove)
                 moveMade = True
-                AIThinking = False        
+                AIThinking = False 
+            """    
+                
+            AIMove = ChessAI_s.getBestMove(validMoves)
+            if AIMove is None:
+                AIMove = chessAI.findRandomMove(validMoves)
+            gs.makeMove(AIMove)
+            ChessAI_s.MakeMove_s(AIMove)
+            moveMade = True    
             
         #If a move is made we calculate the new move
         if moveMade:
