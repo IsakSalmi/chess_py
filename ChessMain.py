@@ -143,7 +143,6 @@ def main():
 
         #AI move finder with threading
         if not gameOver and not humanTurn and not moveUndone:
-            
             """
             if not AIThinking:
                 AIThinking = True
@@ -154,17 +153,17 @@ def main():
                 returnQueue = Queue() #used to pass data betweem threads
                 moveFinderProcess = Process(target=chessAI.findBestMove, args=(gs, validMoves, returnQueue))
                 moveFinderProcess.start()
-                    
+                        
             if not moveFinderProcess.is_alive():
                 print("done thinking")
                 AIMove = returnQueue.get()
                 if AIMove is None:
                     AIMove = chessAI.findRandomMove(validMoves)
                 gs.makeMove(AIMove)
+                ChessAI_s.MakeMove_s(AIMove)
                 moveMade = True
-                AIThinking = False 
+                AIThinking = False    
             """    
-                
             AIMove = ChessAI_s.getBestMove(validMoves)
             if AIMove is None:
                 AIMove = chessAI.findRandomMove(validMoves)

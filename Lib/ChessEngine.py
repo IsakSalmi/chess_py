@@ -203,8 +203,6 @@ class GameState():
 				self.checkMate = True
 			else:
 				self.staleMate = True
-		if len(self.moveLog) == 120:
-			self.staleMate = True #change to a diffrent losing title2,
 
 		self.currentCastlingRights = tempCastlingRights
 
