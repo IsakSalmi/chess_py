@@ -48,6 +48,12 @@ def main():
     
     playerOne = False
     playerTwo = False
+
+    OwnAI_W = False
+    OwnAI_B = False
+
+    SF_W = False
+    SF_B = False
     
     gameOver = False  # True in case of Checkmate and Stalemate
     
@@ -65,19 +71,33 @@ def main():
             elif e.type == p.MOUSEBUTTONDOWN:
                 if  (BOARD_WIDTH-60)/2< p.mouse.get_pos()[0] < (BOARD_WIDTH-60)/2 + 100 and 100< p.mouse.get_pos()[1] < 120:
                     playerOne = True
-                    playerTwo = False
-                    start = False 
-                elif  (BOARD_WIDTH-60)/2< p.mouse.get_pos()[0] < (BOARD_WIDTH-60)/2 + 100 and 140 < p.mouse.get_pos()[1] < 160:
-                    playerOne = True
                     playerTwo = True
                     start = False 
-                elif  (BOARD_WIDTH-60)/2< p.mouse.get_pos()[0] < (BOARD_WIDTH-60)/2 + 100 and 180 < p.mouse.get_pos()[1] < 200:
+                elif  (BOARD_WIDTH-60)/2< p.mouse.get_pos()[0] < (BOARD_WIDTH-170)/2 + 100 and 140 < p.mouse.get_pos()[1] < 160:
+                    playerOne = True
+                    playerTwo = False
+                    OwnAI_B = True
+                    start = False 
+                elif  (BOARD_WIDTH-60)/2< p.mouse.get_pos()[0] < (BOARD_WIDTH+60)/2 + 100 and 140 < p.mouse.get_pos()[1] < 160:
+                    playerOne = True
+                    playerTwo = False
+                    SF_B = True
+                    start = False 
+                elif  (BOARD_WIDTH-60)/2< p.mouse.get_pos()[0] < (BOARD_WIDTH-170)/2 + 100 and 180 < p.mouse.get_pos()[1] < 200:
                     playerOne = False
                     playerTwo = True
+                    OwnAI_W = True
                     start = False 
+                elif  (BOARD_WIDTH-60)/2< p.mouse.get_pos()[0] < (BOARD_WIDTH+60)/2 + 100 and 180 < p.mouse.get_pos()[1] < 200:
+                    playerOne = False
+                    playerTwo = True
+                    SF_W = True
+                    start = False   
                 elif  (BOARD_WIDTH-60)/2< p.mouse.get_pos()[0] < (BOARD_WIDTH-60)/2 + 100 and 220 < p.mouse.get_pos()[1] < 240:
                     playerOne = False
                     playerTwo = False
+                    OwnAI_W = True
+                    SF_B = True
                     start = False 
         drawStartScreen(screen)
         clock.tick(MAX_FPS)
@@ -143,33 +163,33 @@ def main():
 
         #AI move finder with threading
         if not gameOver and not humanTurn and not moveUndone:
-            """
-            if not AIThinking:
-                AIThinking = True
-                print("thinking.....")
-                    
-                #if you are not using threading you only need to set AIMove = findBestMove
-                #and take awhay all the threading parts
-                returnQueue = Queue() #used to pass data betweem threads
-                moveFinderProcess = Process(target=chessAI.findBestMove, args=(gs, validMoves, returnQueue))
-                moveFinderProcess.start()
+            if (OwnAI_B and not gs.whiteToMove) or (OwnAI_W and gs.whiteToMove):
+                if not AIThinking:
+                    AIThinking = True
+                    print("thinking.....")
                         
-            if not moveFinderProcess.is_alive():
-                print("done thinking")
-                AIMove = returnQueue.get()
+                    #if you are not using threading you only need to set AIMove = findBestMove
+                    #and take awhay all the threading parts
+                    returnQueue = Queue() #used to pass data betweem threads
+                    moveFinderProcess = Process(target=chessAI.findBestMove, args=(gs, validMoves, returnQueue))
+                    moveFinderProcess.start()
+                            
+                if not moveFinderProcess.is_alive():
+                    print("done thinking")
+                    AIMove = returnQueue.get()
+                    if AIMove is None:
+                        AIMove = chessAI.findRandomMove(validMoves)
+                    gs.makeMove(AIMove)
+                    ChessAI_s.MakeMove_s(AIMove)
+                    moveMade = True
+                    AIThinking = False    
+            elif (SF_B and not gs.whiteToMove) or (SF_W and gs.whiteToMove):    
+                AIMove = ChessAI_s.getBestMove(validMoves)
                 if AIMove is None:
                     AIMove = chessAI.findRandomMove(validMoves)
                 gs.makeMove(AIMove)
                 ChessAI_s.MakeMove_s(AIMove)
-                moveMade = True
-                AIThinking = False    
-            """    
-            AIMove = ChessAI_s.getBestMove(validMoves)
-            if AIMove is None:
-                AIMove = chessAI.findRandomMove(validMoves)
-            gs.makeMove(AIMove)
-            ChessAI_s.MakeMove_s(AIMove)
-            moveMade = True    
+                moveMade = True    
             
         #If a move is made we calculate the new move
         if moveMade:
@@ -201,10 +221,12 @@ responsible for all the graphics in the game
 '''
 def drawStartScreen(screen):
     drawBoard(screen)
-    drawButton(screen,"1P vs AI",(BOARD_WIDTH-60)/2,100,100,20)
-    drawButton(screen,"1P vs P2",(BOARD_WIDTH-60)/2,140,100,20)
-    drawButton(screen,"AI vs P2",(BOARD_WIDTH-60)/2,180,100,20)
-    drawButton(screen,"AI vs AI",(BOARD_WIDTH-60)/2,220,100,20)
+    drawButton(screen,"1P vs P2",(BOARD_WIDTH-60)/2,100,100,20)
+    drawButton(screen,"1P vs AI",(BOARD_WIDTH-170)/2,140,100,20)
+    drawButton(screen,"1P vs SF",(BOARD_WIDTH+60)/2,140,100,20)
+    drawButton(screen,"AI vs P2",(BOARD_WIDTH-170)/2,180,100,20)
+    drawButton(screen,"SF vs P2",(BOARD_WIDTH+60)/2,180,100,20)
+    drawButton(screen,"AI vs SF",(BOARD_WIDTH-60)/2,220,100,20)
     
     
 def drawGameState(screen, gs, selectedSquare, validMoves,moveLogFont):
